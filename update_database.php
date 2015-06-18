@@ -21,11 +21,10 @@ if ($db = new SQLite3('local_db.sql')) {
 }
 
 //API Token obtained on NationBuilder
-// TODO: Import this from a file (token.txt)
-$token = "27afccaaed57ec7adafe5ea5899f81d9f6ef9658c635f5d2efb814974e2c12be";
+$token = file_get_contents('token.txt');
 
 //fetch initial listing, primarly to find the page count (defined as total_pages)
-$mainPage = pullUrl("https://techspring.nationbuilder.com/api/v1/people?limit=100&access_token=" . $token);
+$mainPage = pullUrl("https://techspring.nationbuilder.com/api/v1/people?access_token=" . $token);
 $mainObj = json_decode($mainPage);
 
 $pages_total = $mainObj->total_pages;

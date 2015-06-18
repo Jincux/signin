@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta name="apple-mobile-web-app-capable" content="yes">
 		<title>TechSpring Sign-in</title>
 		<style type="text/css">
 		body {
 			font-family: Verdana;
 			text-align: center;
+			background-color: #bbb;
 			height:100%;
 			width:100%;
 			margin: 0;
