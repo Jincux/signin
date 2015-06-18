@@ -14,24 +14,44 @@ $user = $q->fetchArray();
 //putenv('GDFONTPATH=' . realpath('.'));
 $font = './Verdana.ttf';
 
-$im = @imagecreate(280*2, 180*2)
+$logo = imagecreatefrompng('logo.png');
+
+$width = 280*2;
+$height = 180*2;
+
+$im = @imagecreatetruecolor($width, $height)
     or die("Cannot Initialize new GD image stream");
+
 $background_color = imagecolorallocate($im, 255, 255, 255);
 $text_color = imagecolorallocate($im, 0, 0, 0);
 $text_color2 = imagecolorallocate($im, 100, 100, 100);
-//imagestring($im, 5, 5, 5,  $user['first_name'] . " " . $user['last_name'], $text_color);
-//imagestring($im, 5, 10, 30,  $user['email'], $text_color);
-//imagestring($im, 5, 10, 50,  $user['phone'], $text_color);
-//imagettftext(image, size, angle, x, y, color, fontfile, text)
-imagettftext($im, 40, 0, 15, 60, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
-imagettftext($im, 30, 0, 15, 120, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
-imagettftext($im, 30, 0, 15, 160, $text_color2, $font, $user['email']);
+
+imagefill($im, 0, 0, $background_color);
+
+$tb = imagettfbbox(20, 0, $font, 'TechSpring'); //solution found on PHP forums for centering text
+$x = ceil(($width - $tb[2]) / 2);
+
+imagettftext($im, 20, 0, $x, 40, $text_color2, $font, "TechSpring");
+//imagesavealpha($im, true);
+//imagealphablending($im, false);
+imagecopyresized($im, $logo, $x - 50, 0, 0, 0, 50, 50, 393, 413);
+
+imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
+imagettftext($im, 25, 0, 35, 190, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
+imagettftext($im, 25, 0, 35, 230, $text_color2, $font, $user['email']);
+
+imagesavealpha($im, false);
 imagepng($im, 'temp.png');
+
 imagedestroy($im);
+imagedestroy($logo);
+//return;
 
 //header('Location: index.php');
 $printerName = file_get_contents('printer.txt');
-$ret = shell_exec("lpr -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
+$options = "-o InputSlot=Left"; //prints off the left spool
+echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
+$ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
 //$ret = shell_exec("lpr print.php");
 if($ret === NULL) {
 	echo "An error has occured!";
