@@ -1,11 +1,8 @@
 <?php
-/*if ($db = new SQLite3('local_db.sql')) {
-    $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id int, first_name varchar(32), last_name varchar(32), email varchar(64), phone varchar(11), PRIMARY KEY (id))');
-}
 $id = $db->escapeString($_POST['id']);
 
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
-$user = $q->fetchArray();*/
+$user = $q->fetchArray();
 
 //log in the database the the vistor was here
 //@$db->query("INSERT INTO `visits` (uid, time) VALUES ('" . $id . "', '" . time() . "')");
@@ -42,7 +39,7 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 
 
 
-header("Content-Type: image/png");
+//header("Content-Type: image/png");
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
 $font = './Verdana.ttf';
@@ -70,12 +67,12 @@ imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
 //imagealphablending($im, false);
 imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
 
-$user = array('first_name'=>'Devon', 'last_name'=>'Endicott');
+//$user = array('first_name'=>'Devon', 'last_name'=>'Endicott');
 imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
 imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $infoText);
 
 imagesavealpha($im, false);
-imagepng($im);
+imagepng($im, 'temp.png');
 
 imagedestroy($im);
 imagedestroy($logo);

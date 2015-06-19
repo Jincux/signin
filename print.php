@@ -13,40 +13,45 @@ $user = $q->fetchArray();
 //header("Content-Type: image/png");
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
-$font = './Verdana.ttf';
 
-$logo = imagecreatefrompng('logo.png');
+if(isset($_POST['from_options'])) {
+	include 'imageGen.php';
+} else {
+	$font = './Verdana.ttf';
 
-$width = 280*2;
-$height = 180*2;
+	$logo = imagecreatefrompng('logo.png');
 
-$im = @imagecreatetruecolor($width, $height)
-    or die("Cannot Initialize new GD image stream");
+	$width = 280*2;
+	$height = 180*2;
 
-$background_color = imagecolorallocate($im, 255, 255, 255);
-$text_color = imagecolorallocate($im, 0, 0, 0);
-$text_color2 = imagecolorallocate($im, 100, 100, 100);
+	$im = @imagecreatetruecolor($width, $height)
+	    or die("Cannot Initialize new GD image stream");
 
-//imageantialias($im, true);
-imagefill($im, 0, 0, $background_color);
+	$background_color = imagecolorallocate($im, 255, 255, 255);
+	$text_color = imagecolorallocate($im, 0, 0, 0);
+	$text_color2 = imagecolorallocate($im, 100, 100, 100);
 
-$tb = imagettfbbox(20, 0, $font, 'TechSpring'); //solution found on PHP forums for centering text
-$x = ceil(($width - $tb[2]) / 2);
+	//imageantialias($im, true);
+	imagefill($im, 0, 0, $background_color);
 
-imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
-//imagesavealpha($im, true);
-//imagealphablending($im, false);
-imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
+	$tb = imagettfbbox(20, 0, $font, 'TechSpring'); //solution found on PHP forums for centering text
+	$x = ceil(($width - $tb[2]) / 2);
 
-imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
-imagettftext($im, 25, 0, 35, 190, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
-imagettftext($im, 25, 0, 35, 230, $text_color2, $font, $user['email']);
+	imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
+	//imagesavealpha($im, true);
+	//imagealphablending($im, false);
+	imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
 
-imagesavealpha($im, false);
-imagepng($im, 'temp.png');
+	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
+	imagettftext($im, 25, 0, 35, 190, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
+	imagettftext($im, 25, 0, 35, 230, $text_color2, $font, $user['email']);
 
-imagedestroy($im);
-imagedestroy($logo);
+	imagesavealpha($im, false);
+	imagepng($im, 'temp.png');
+
+	imagedestroy($im);
+	imagedestroy($logo);
+}
 //return;
 
 //header('Location: index.php');

@@ -72,7 +72,9 @@ $user = $q->fetchArray();
 </head>
 <body>
 	<div>
-		<form action="imageGen.php" method="post">
+		<form action="print.php" method="post">
+			<input type="hidden" value="1" name="from_options">
+			<input type="hidden" value="<?php echo $_POST['id'] ?>" name="id">
 			<table>
 				<tr>
 					<td>Title</td>
