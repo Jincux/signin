@@ -7,7 +7,8 @@ $id = $db->escapeString($_POST['id']);
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 $user = $q->fetchArray();
 
-
+//log in the database the the vistor was here
+@$db->query("INSERT INTO `visits` (uid, time) VALUES ('" . $id . "', '" . time() . "')");
 
 //header("Content-Type: image/png");
 //echo realpath('.');
@@ -26,15 +27,16 @@ $background_color = imagecolorallocate($im, 255, 255, 255);
 $text_color = imagecolorallocate($im, 0, 0, 0);
 $text_color2 = imagecolorallocate($im, 100, 100, 100);
 
+//imageantialias($im, true);
 imagefill($im, 0, 0, $background_color);
 
 $tb = imagettfbbox(20, 0, $font, 'TechSpring'); //solution found on PHP forums for centering text
 $x = ceil(($width - $tb[2]) / 2);
 
-imagettftext($im, 20, 0, $x, 40, $text_color2, $font, "TechSpring");
+imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
 //imagesavealpha($im, true);
 //imagealphablending($im, false);
-imagecopyresized($im, $logo, $x - 50, 0, 0, 0, 50, 50, 393, 413);
+imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
 
 imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
 imagettftext($im, 25, 0, 35, 190, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
@@ -50,7 +52,7 @@ imagedestroy($logo);
 //header('Location: index.php');
 $printerName = file_get_contents('printer.txt');
 $options = "-o InputSlot=Left"; //prints off the left spool
-echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
+//echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
 $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
 //$ret = shell_exec("lpr print.php");
 if($ret === NULL) {

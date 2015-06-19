@@ -18,6 +18,7 @@ function pullUrl($url) {
 //checking local database to see if it exists
 if ($db = new SQLite3('local_db.sql')) {
     $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id int, first_name varchar(32), last_name varchar(32), email varchar(64), phone varchar(11), PRIMARY KEY (id))');
+    $q = @$db->query('CREATE TABLE IF NOT EXISTS visits (uid int, time varchar(32))');
 }
 
 //API Token obtained on NationBuilder
@@ -42,9 +43,9 @@ for($i = 1; $i <= $pages_total; $i++) {
 	$results = $pageObj->results;
 	foreach($results as $re) {
 		$id = $re->id;
-		$first_name = $re->first_name;
-		$last_name = $re->last_name;
-		$email = $re->email;
+		$first_name = $db->escapeString($re->first_name);
+		$last_name = $db->escapeString($re->last_name);
+		$email = $db->escapeString($re->email);
 
 		//some users have their numbers listed as "mobile", others have "phone"
 		if($re->mobile !== null) {
