@@ -131,6 +131,10 @@ if($q->fetchArray() === false) {
 		background-color: #3333ff;
 		color: #eee;
 	}
+
+	#buttons {
+		float: right;
+	}
 	</style>
 </head>
 <body>
@@ -143,10 +147,14 @@ if($q->fetchArray() === false) {
 			echo "<span style=\"color: #444\">";
 			if($result['phone'] != "") { echo preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $result['phone']) . "<br />"; }
 			if($result['email'] != "") { echo $result['email'] . "<br />"; }
-			echo "</span>";
+			echo "</span></div>";
+			echo "<div id=\"buttons\">";
 			echo "<form action=\"print.php\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"" . $result['id'] . "\">";
-			echo "</div><input style=\"float:right;display:inline-block\" type=\"submit\" value=\"Print\" /></form>";
-			echo "</div>";
+			echo "<input style=\"float:right;display:inline-block\" type=\"submit\" value=\"Print\" />";
+			echo "</form>";
+			echo "<form action=\"options.php\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"" . $result['id'] . "\">";
+			echo "<input style=\"background-color:#0f0; float:right;display:inline-block\" type=\"submit\" value=\"Options\" /></form>";
+			echo "</div></div>";
 		}
 	} else {
 		echo "<h1>Uh oh!</h1>";
