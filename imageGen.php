@@ -44,7 +44,7 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 
 
 include 'phpqrcode/phpqrcode.php';
-QRcode::png($id);
+QRcode::png($id, 'resources/qr.png');
 $qrImage = imagecreatefrompng('resources/qr.png');
 
 
