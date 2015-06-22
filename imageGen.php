@@ -1,8 +1,17 @@
 <?php
-$id = $db->escapeString($_POST['id']);
+if(!isset($db)) {
+	$db = new SQLite3('local_db.sql');
+}
+//
 
-$q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
+if(isset($_GET['debug'])) {
+	$q = @$db->query('SELECT * FROM `users` WHERE `first_name` = \'Devon\'');
+} else {
+	$id = $db->escapeString($_POST['id']);
+	$q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
+}
 $user = $q->fetchArray();
+$id = $user['id'];
 
 //log in the database the the vistor was here
 //@$db->query("INSERT INTO `visits` (uid, time) VALUES ('" . $id . "', '" . time() . "')");
@@ -34,12 +43,18 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 
 
 
+include 'phpqrcode/phpqrcode.php';
+$jsonObj = new stdClass();
+$jsonObj->nbid = $id;
+$jsonObj->name = $user['first_name'] . " " . $user['last_name'];
+QRcode::png(json_encode($jsonObj), 'resources/qr.png');
+$qrImage = imagecreatefrompng('resources/qr.png');
 
 
 
-
-
-//header("Content-Type: image/png");
+if(isset($_GET['debug'])) {
+	header("Content-Type: image/png");
+}
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
 $font = 'resources/Verdana.ttf';
@@ -66,13 +81,19 @@ imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
 //imagesavealpha($im, true);
 //imagealphablending($im, false);
 imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
+imagecopyresized($im, $qrImage, 0, 0, 0, 0, 70, 70, 100, 100);
+//imagecopyresized(dst_image, src_image, dst_x, dst_y, src_x, src_y, dst_w, dst_h, src_w, src_h)
 
 //$user = array('first_name'=>'Devon', 'last_name'=>'Endicott');
 imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
 imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $infoText);
 
 imagesavealpha($im, false);
-imagepng($im, 'temp.png');
+if(isset($_GET['debug'])) {
+	imagepng($im);
+} else {
+	imagepng($im, 'temp.png');
+}
 
 imagedestroy($im);
 imagedestroy($logo);

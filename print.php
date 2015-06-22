@@ -65,7 +65,8 @@ $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpat
 
 <html>
 	<head>
-		<title>Welcome</title>
+		<title>Welcome!</title>
+		<meta http-equiv="refresh" content="5;URL='/'" />
 		<style type="text/css">
 		body {
 			font-family: Verdana;
