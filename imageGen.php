@@ -45,12 +45,13 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 
 include 'phpqrcode/phpqrcode.php';
 unlink('resources/qr.png');
+echo $id;
 QRcode::png($id, 'resources/qr.png');
 $qrImage = imagecreatefrompng('resources/qr.png');
 
 
 
-if(isset($_GET['debug'])) {
+if(isset($_GET['print'])) {
 	header("Content-Type: image/png");
 }
 //echo realpath('.');
