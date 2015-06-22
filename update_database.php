@@ -17,8 +17,8 @@ function pullUrl($url) {
 
 //checking local database to see if it exists
 if ($db = new SQLite3('local_db.sql')) {
-    $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id int, first_name varchar(32), last_name varchar(32), email varchar(64), phone varchar(11), PRIMARY KEY (id))');
-    $q = @$db->query('CREATE TABLE IF NOT EXISTS visits (uid int, time varchar(32))');
+    $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id INTEGER, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, PRIMARY KEY (id))');
+    $q = @$db->query('CREATE TABLE IF NOT EXISTS visits (uid INTEGER, time TEXT, info TEXT)');
 }
 
 //API Token obtained on NationBuilder
@@ -34,6 +34,7 @@ $pages_total = $mainObj->total_pages;
 //$pages_total = 4;
 //fetch each page of results (limit of 10 people per page)
 for($i = 1; $i <= $pages_total; $i++) {
+	echo substr(($i/$pages_total)*100, 0, 5) . "%\r";
 	$page = pullUrl("https://techspring.nationbuilder.com/api/v1/people?page=" . $i . "&access_token=" . $token);
 	$pageObj = json_decode($page);
 	/*if($_GET['debug']) {
@@ -59,7 +60,7 @@ for($i = 1; $i <= $pages_total; $i++) {
 		$q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $re->id . ';');
 		
 		if(($arr = $q->fetchArray()) === false) {
-			echo "Welcome, <b>" . $first_name . "</b> " . $last_name . "!<br/>";
+			//echo "Welcome, <b>" . $first_name . "</b> " . $last_name . "!<br/>";
 			$q = @$db->query("INSERT INTO `users` (id, first_name, last_name, email, phone) VALUES ('" . $id . "','" . $first_name . "','" . $last_name . "','" . $email. "','" . $phone . "');");
 		} else {
 			//check to see if any information has changed in the database
@@ -73,5 +74,6 @@ for($i = 1; $i <= $pages_total; $i++) {
 		}
 	}
 }
+echo "\nDone\n";
 $db->close();
 ?>

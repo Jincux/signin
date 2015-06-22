@@ -1,9 +1,6 @@
 <?php
 //open $db as a database resource
-if ($db = new SQLite3('local_db.sql')) {
-	//if the table doesn't exist, create it
-    $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id int, first_name varchar(32), last_name varchar(32), email varchar(64), phone varchar(11), PRIMARY KEY (id))');
-}
+$db = new SQLite3('local_db.sql');
 
 //sanitizing the input string to prevent injection
 $input = $_POST['name'];

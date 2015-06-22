@@ -34,7 +34,7 @@ if(isset($_POST['employer'])) {
 $infoText = $infoText . "\n";
 
 if(isset($_POST['phone']) && isset($_POST['phone_display'])) {
-	$infoText = $infoText . $_POST['phone'] . "\n";
+	$infoText = $infoText . preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']) . "\n";
 } 
 
 if(isset($_POST['email']) && isset($_POST['email_display'])) {

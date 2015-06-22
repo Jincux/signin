@@ -1,14 +1,9 @@
 <?php
-if ($db = new SQLite3('local_db.sql')) {
-    $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id int, first_name varchar(32), last_name varchar(32), email varchar(64), phone varchar(11), PRIMARY KEY (id))');
-}
+$db = new SQLite3('local_db.sql');
 $id = $db->escapeString($_POST['id']);
 
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 $user = $q->fetchArray();
-
-//log in the database the the vistor was here
-@$db->query("INSERT INTO `visits` (uid, time) VALUES ('" . $id . "', '" . time() . "')");
 
 //header("Content-Type: image/png");
 //echo realpath('.');
@@ -17,6 +12,13 @@ $user = $q->fetchArray();
 if(isset($_POST['from_options'])) {
 	include 'imageGen.php';
 } else {
+	$visit = @$db->query('SELECT * FROM `visits` WHERE `uid`=' . $id . ' ORDER BY `time` DESC LIMIT 1;');
+	if(($lastVisit = $visit->fetchArray()) === false) {
+		header('Location: options.php?id=' . $id);
+		return;
+	} else {
+		$infoText = $lastVisit['info'];
+	}
 	$font = 'resources/Verdana.ttf';
 
 	$logo = imagecreatefrompng('resources/logo.png');
@@ -43,8 +45,7 @@ if(isset($_POST['from_options'])) {
 	imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
 
 	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
-	imagettftext($im, 25, 0, 35, 190, $text_color2, $font, preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']));
-	imagettftext($im, 25, 0, 35, 230, $text_color2, $font, $user['email']);
+	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $infoText);
 
 	imagesavealpha($im, false);
 	imagepng($im, 'temp.png');
@@ -52,13 +53,15 @@ if(isset($_POST['from_options'])) {
 	imagedestroy($im);
 	imagedestroy($logo);
 }
-//return;
 
-//header('Location: index.php');
+
 $printerName = trim(file_get_contents('config/printer.txt'));
 $options = "-o InputSlot=Left"; //prints off the left spool
-//echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
+
 $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
+
+//log in the database the the vistor was here
+@$db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString($infoText) . "')");
 
 //let's give out guest a nice, warm welcome
 ?>

@@ -1,6 +1,6 @@
 <?php
 $db = new SQLite3('local_db.sql');
-$id = $db->escapeString($_POST['id']);
+$id = $db->escapeString($_REQUEST['id']);
 
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 
@@ -74,7 +74,7 @@ $user = $q->fetchArray();
 	<div>
 		<form action="print.php" method="post">
 			<input type="hidden" value="1" name="from_options">
-			<input type="hidden" value="<?php echo $_POST['id'] ?>" name="id">
+			<input type="hidden" value="<?php echo $id; ?>" name="id">
 			<table>
 				<tr>
 					<td>Title</td>
