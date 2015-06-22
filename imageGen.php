@@ -45,6 +45,7 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 
 include 'phpqrcode/phpqrcode.php';
 unlink('resources/qr.png');
+unlink('temp.png');
 QRcode::png($id, 'resources/qr.png');
 $qrImage = imagecreatefrompng('resources/qr.png');
 
@@ -81,7 +82,7 @@ imagettftext($im, 25, 0, $x, 50, $text_color2, $font, "TechSpring");
 //imagesavealpha($im, true);
 //imagealphablending($im, false);
 imagecopyresized($im, $logo, $x - 60, -5, 0, 0, 75, 75, 393, 413);
-imagecopyresized($im, $qrImage, 0, 0, 0, 0, 60, 60, 100, 100);
+imagecopyresized($im, $qrImage, 0, 0, 0, 0, 70, 70, 87, 87);
 //imagecopyresized(dst_image, src_image, dst_x, dst_y, src_x, src_y, dst_w, dst_h, src_w, src_h)
 
 //$user = array('first_name'=>'Devon', 'last_name'=>'Endicott');
