@@ -55,7 +55,7 @@ if(isset($_POST['from_options'])) {
 //return;
 
 //header('Location: index.php');
-$printerName = file_get_contents('printer.txt');
+$printerName = trim(file_get_contents('printer.txt'));
 $options = "-o InputSlot=Left"; //prints off the left spool
 //echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
 $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");

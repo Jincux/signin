@@ -1,1 +1,1 @@
-LabelWriter-450-Twin-Turbo
+DYMO_LabelWriter_450_Twin_Turbo
