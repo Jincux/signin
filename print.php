@@ -58,11 +58,10 @@ if(isset($_POST['from_options'])) {
 $printerName = trim(file_get_contents('config/printer.txt'));
 $options = "-o InputSlot=Left"; //prints off the left spool
 
-//$ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
+$ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
 
 //log in the database the the vistor was here
 @$db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString($infoText) . "')");
-echo $db->lastErrorMsg();
 //let's give out guest a nice, warm welcome
 $db->close();
 ?>
