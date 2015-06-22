@@ -42,9 +42,9 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 //header("Content-Type: image/png");
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
-$font = './Verdana.ttf';
+$font = 'resources/Verdana.ttf';
 
-$logo = imagecreatefrompng('logo.png');
+$logo = imagecreatefrompng('resources/logo.png');
 
 $width = 280*2;
 $height = 180*2;

@@ -43,9 +43,9 @@
 		</style>
 	</head>
 	<body>
-		<h1>Welcome to TechSpring</h1>
-		<p>I suck at formatting, so I'll do that later!</p>
-		<div style="display:block; position: absolute: height: 100% width: 100%">
+		<h1>SpringIn</h1>
+		<h2>Welcome to TechSpring!</h2>		
+		<div style="display:block; height: 100% width: 100%">
 			<div id="search">
 				<form id="form" action="search.php" method="post">
 					<input name="name" style="height: 50px; width: 100%; font-size: 50px" type="text" /><br />

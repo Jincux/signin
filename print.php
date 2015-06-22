@@ -17,9 +17,9 @@ $user = $q->fetchArray();
 if(isset($_POST['from_options'])) {
 	include 'imageGen.php';
 } else {
-	$font = './Verdana.ttf';
+	$font = 'resources/Verdana.ttf';
 
-	$logo = imagecreatefrompng('logo.png');
+	$logo = imagecreatefrompng('resources/logo.png');
 
 	$width = 280*2;
 	$height = 180*2;
@@ -55,15 +55,10 @@ if(isset($_POST['from_options'])) {
 //return;
 
 //header('Location: index.php');
-$printerName = trim(file_get_contents('printer.txt'));
+$printerName = trim(file_get_contents('config/printer.txt'));
 $options = "-o InputSlot=Left"; //prints off the left spool
 //echo "lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png";
 $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpath('.') . "/temp.png");
-//$ret = shell_exec("lpr print.php");
-if($ret === NULL) {
-	echo "An error has occured!";
-}
-echo $ret;
 
 //let's give out guest a nice, warm welcome
 ?>
@@ -85,7 +80,7 @@ echo $ret;
 	</head>
 	<body>
 		<h1>Welcome to TechSpring, <b><?php echo $user['first_name'] ?></b></h1>
-		<p><?php echo file_get_contents('welcome_message.txt'); ?></p>
+		<p><?php echo file_get_contents('config/welcome_message.txt'); ?></p>
 		<hr/>
 		<p style="font-size: 8pt">The page should redirect within 5 seconds. If it doesn't, <a href="index.php">click here</a></p>
 	</body>
