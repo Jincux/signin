@@ -3,15 +3,17 @@
 	<head>
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<title>TechSpring Sign-in</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
 		<style type="text/css">
 		body {
 			font-family: Verdana;
 			text-align: center;
-			background-color: #bbb;
+			background-color: #B6C0D2;
 			height:100%;
 			width:100%;
 			margin: 0;
 			padding: 0;
+			color: #1C263C;
 			
 		}
 
@@ -25,8 +27,10 @@
 			text-align: center;
 		}
 
+		/*1C263C	313C53	455268	B6C0D2	9CFF00	FFFFFF*/
+
 		#button {
-			background-color: #00ff00;
+			background-color:  #9CFF00;
 			padding-left: none;
 			width: 20%;
 			margin: 0 auto;
@@ -36,9 +40,14 @@
 		input {
 			padding: 5px;
 			margin: none;
-			border: 1px solid #ccc;
-			background-color: #ddd;
+			border: 1px solid #455268;
+			background-color: #6699FF;
 			border-radius: 10px;
+
+			box-shadow: inset 0px 0px 5px 0px #666;
+			-webkit-box-shadow: inset 0px 0px 5px 0px #666;
+			-moz-box-shadow: inset 0px 0px 5px 0px #666;
+			-o-box-shadow: inset 0px 0px 5px 0px #666;
 		}
 		</style>
 	</head>

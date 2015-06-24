@@ -70,10 +70,10 @@ $db->close();
 	<head>
 		<title>Welcome!</title>
 		<meta http-equiv="refresh" content="5;URL='/'" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
 		<style type="text/css">
 		body {
 			font-family: Verdana;
-			background-color: #bbb;
 			text-align: center;
 		}
 

@@ -20,11 +20,13 @@ $user = $q->fetchArray();
 		padding: 10px;
 		border: 2px solid #dadada;
    		border-radius: 7px;
-   		color: #ccc;
+   		color: #455268;
 	}
 
+	/*1C263C	313C53	455268	B6C0D2	9CFF00	FFFFFF*/
+
 	input:focus {
-		color: #000;
+		color: #1C263C;
 		outline: none;
 	    border-color: #9ecaed;
 	    box-shadow: 0 0 10px #9ecaed;
@@ -38,6 +40,7 @@ $user = $q->fetchArray();
 	input[type=checkbox] {
 		height: 30pt;
 		width: 30pt;
+		float: left;
 	}
 
 	input[type=submit] {
@@ -69,6 +72,7 @@ $user = $q->fetchArray();
 		border-radius: 15px;
 	}
 	</style>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
 	<div>

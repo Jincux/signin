@@ -99,26 +99,27 @@ if($q->fetchArray() === false) {
 <head>
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	<title></title>
 	<style class="text/css">
 	body {
-		font-family: Verdana;
-		background-color: #bbb;
 		text-align: center;
 	}
 
 	.search_profile {
+		color: #1C263C;
 		font-size: 20pt;
 		padding: 20px;
 		text-align: left;
 		width: 60%;
 		margin: 10px auto;
-		background-color: #eee;
+		background-color: #fff;
 		border-radius: 10px;
 	}
 
 	.info {
 		display: inline-block;
+
 	}
 
 	input {
@@ -126,7 +127,10 @@ if($q->fetchArray() === false) {
 		border-radius: 10px;
 		padding: 10px;
 		background-color: #3333ff;
-		color: #eee;
+	}
+
+	input[type=submit] {
+		margin: 5px;
 	}
 
 	#buttons {
@@ -141,7 +145,7 @@ if($q->fetchArray() === false) {
 		foreach($orderedResults as $result) {
 			echo "<div class=\"search_profile\"><div class=\"info\">";
 			echo "<b>" . $result['first_name'] . " " . $result['last_name'] . "</b><br/><br/>";
-			echo "<span style=\"color: #444\">";
+			echo "<span style=\"color: #455268;\">";
 			if($result['phone'] != "") { echo preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $result['phone']) . "<br />"; }
 			if($result['email'] != "") { echo $result['email'] . "<br />"; }
 			echo "</span></div>";
