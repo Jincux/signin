@@ -142,6 +142,7 @@ if($q->fetchArray() === false) {
 	<?php
 	if($hasResults) {
 	echo "<h1>Are you..</h1>";
+	echo "<h2><a href=\"\">Go Back</a></h2>";
 		foreach($orderedResults as $result) {
 			echo "<div class=\"search_profile\"><div class=\"info\">";
 			echo "<b>" . $result['first_name'] . " " . $result['last_name'] . "</b><br/><br/>";

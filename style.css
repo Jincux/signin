@@ -10,6 +10,13 @@ body {
 	
 }
 
+h1, h2, h3 {
+  text-shadow: 0px 2px 3px rgba(255,255,255,0.7);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}
+
 #search {
 	display: inline-block;
 	padding: none;
@@ -38,12 +45,9 @@ input[type=submit] {
 input[type=text] {
 	padding: 5px;
 	margin: none;
-	border: 1px solid #455268;
 	background-color: #6699FF;
 	border-radius: 10px;
+	border: none;
 
-	box-shadow: inset 0px 0px 5px 0px #666;
-	-webkit-box-shadow: inset 0px 0px 5px 0px #666;
-	-moz-box-shadow: inset 0px 0px 5px 0px #666;
-	-o-box-shadow: inset 0px 0px 5px 0px #666;
+	box-shadow:inset 2px 2px 2px #333;
 }

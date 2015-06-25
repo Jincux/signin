@@ -19,6 +19,7 @@ function pullUrl($url) {
 if ($db = new SQLite3('local_db.sql')) {
     $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id INTEGER, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, PRIMARY KEY (id))');
     $q = @$db->query('CREATE TABLE IF NOT EXISTS visits (uid INTEGER, time TEXT, info TEXT)');
+    $q = @$db->query('CREATE TABLE IF NOT EXISTS events (eid INTEGER, start_time TEXT, end_time TEXT, name TEXT, description TEXT)');
 }
 
 //API Token obtained on NationBuilder
