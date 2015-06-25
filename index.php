@@ -37,6 +37,11 @@
 			width: 20%;
 			margin: 0 auto;
 			border-radius: 10px;
+			display:block;
+			height: 60px;
+			margin-top:5px;
+			padding: 5px;
+			font-size: 40px;
 		}
 
 		input {
@@ -85,11 +90,11 @@
 	<body>
 		<h1>SpringIn</h1>
 		<h2>Welcome to TechSpring!</h2>		
-		<div style="display:block; width: 100%">
+		<div style="display:block; width: 100%; height:150px">
 			<div id="search">
 				<form id="form" action="search.php" method="post">
 					<input name="name" style="height: 50px; width: 100%; font-size: 50px" type="text" /><br />
-					<button onclick="javascript:document.getElementById('#form').submit();"id="button" style="height: 60px; margin-top:5px; padding: 5px; font-size: 40px" type="submit" />Sign-In</button>
+					<button onclick="javascript:document.getElementById('#form').submit();"id="button" type="submit" />Sign-In</button>
 				</form>
 			</div>
 		</div>

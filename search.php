@@ -106,20 +106,8 @@ if($q->fetchArray() === false) {
 		text-align: center;
 	}
 
-	.search_profile {
-		color: #1C263C;
-		font-size: 20pt;
-		padding: 20px;
-		text-align: left;
-		width: 60%;
-		margin: 10px auto;
-		background-color: #fff;
-		border-radius: 10px;
-	}
-
 	.info {
-		display: inline-block;
-
+		
 	}
 
 	input {
@@ -133,31 +121,80 @@ if($q->fetchArray() === false) {
 		margin: 5px;
 	}
 
+	table {
+		margin: 0 auto;
+		border-collapse: collapse;
+	}
+
+	table > tbody > tr {
+		
+		text-align: left;
+		width: 60%;
+		margin: 10px auto;
+		border-radius: 10px;
+		min-height: 120px;
+	}
+
+	table > tbody > tr > td {
+		color: #1C263C;
+		background-color: #fff;
+		font-size: 20pt;
+		padding: 20px;
+	}
+
+	table > tbody > tr > td:first-child {
+		border-radius: 10px 0 0 10px;
+	}
+
+	table > tbody > tr > td:last-child {
+		border-radius: 0 10px 10px 0;
+	}
+
+	.filler {
+		background: none;
+		height: 20px;
+	}
+
 	#buttons {
 		float: right;
+		vertical-align: top;
+		position: relative;
 	}
 	</style>
 </head>
 <body>
 	<?php
 	if($hasResults) {
-	echo "<h1>Are you..</h1>";
-	echo "<h2><a href=\"\">Go Back</a></h2>";
+		echo "<h1>Are you..</h1>";
+		echo "<h2><a href=\"\">Go Back</a></h2>";
+		echo "<table><tbody>";
 		foreach($orderedResults as $result) {
-			echo "<div class=\"search_profile\"><div class=\"info\">";
-			echo "<b>" . $result['first_name'] . " " . $result['last_name'] . "</b><br/><br/>";
-			echo "<span style=\"color: #455268;\">";
-			if($result['phone'] != "") { echo preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $result['phone']) . "<br />"; }
-			if($result['email'] != "") { echo $result['email'] . "<br />"; }
-			echo "</span></div>";
-			echo "<div id=\"buttons\">";
-			echo "<form action=\"print.php\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"" . $result['id'] . "\">";
-			echo "<input style=\"float:right;display:inline-block\" type=\"submit\" value=\"Print\" />";
-			echo "</form>";
-			echo "<form action=\"options.php\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"" . $result['id'] . "\">";
-			echo "<input style=\"background-color:#0f0; float:right;display:inline-block\" type=\"submit\" value=\"Options\" /></form>";
-			echo "</div></div>";
+			?>
+				<tr class="search_profile">
+					<td class="info">
+						<b><?php echo $result['first_name'] . " " . $result['last_name']; ?></b><br/><br/>
+						<span style="width: 1000px; color: #455268;word-wrap: break-word;">
+						<?php
+						if($result['phone'] != "") { echo preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $result['phone']) . "<br />"; }
+						if($result['email'] != "") { echo $result['email'] . "<br />"; }
+						?>
+						</span>
+					</td>
+					<td>
+						<div id="buttons">
+							<form action="print.php" method="post"><input type="hidden" name="id" value="<?php echo $result['id']; ?>">
+								<input style="float:right;display:inline-block" type="submit" value="Print" />
+							</form>
+							<form action="options.php" method="post"><input type="hidden" name="id" value="<?php echo $result['id']; ?>">
+								<input style="background-color:#00f; float:right;display:inline-block" type="submit" value="Options" />
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr class="filler"></tr>
+			<?php
 		}
+		echo "</tbody></table>";
 	} else {
 		echo "<h1>Uh oh!</h1>";
 		echo "We didn't find an account that matched that name!<br />";
