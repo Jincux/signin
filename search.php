@@ -12,85 +12,94 @@ if(trim($input) == "") {
 	die();
 }
 
-//split up each word entered
-$terms = split(" ", $input);
+function search($input) {
+	global $db;
+	//split up each word entered
+	$terms = split(" ", $input);
 
-//construct a SQL query
-$searchSql = "";
-foreach($terms as $term) {
-	if($searchSql != "") {
-		$searchSql = $searchSql . " OR ";
-	}
-	$searchSql = $searchSql . "`first_name` LIKE '" . $term . "' OR ";
-	$searchSql = $searchSql . "`last_name` LIKE '" . $term . "' ";
-}
-$q = @$db->query('SELECT * FROM `users` WHERE ' . $searchSql);
-
-//if the query returned no results, we're going to try it with wildcards
-if($q->fetchArray() === false) {
-	echo "adding wildcards!";
+	//construct a SQL query
 	$searchSql = "";
 	foreach($terms as $term) {
 		if($searchSql != "") {
 			$searchSql = $searchSql . " OR ";
 		}
-		$searchSql = $searchSql . "`first_name` LIKE '" . $term . "%' OR ";
-		$searchSql = $searchSql . "`last_name` LIKE '" . $term . "%' ";
+		$searchSql = $searchSql . "`first_name` LIKE '" . $term . "' OR ";
+		$searchSql = $searchSql . "`last_name` LIKE '" . $term . "' ";
 	}
 	$q = @$db->query('SELECT * FROM `users` WHERE ' . $searchSql);
-} else {
-	$q->reset();
-}
-//ordering results by prominence
-$searchResults = array();
-$pointArray = array();
-$hasResults = true;
-if($q->fetchArray() === false) {
-	$hasResults = false;
-} else {
-	$q->reset();
-	while($result = $q->fetchArray()) {
-		$points = 0;
 
-		$searchResults[$result['id']] = $result;
-
-		if(in_array(strtolower($result['first_name']), array_map('strtolower', $terms))) {
-			$points += 5;
-			//echo "first name match +5<br />";
-		}
-
-		if(in_array(strtolower($result['last_name']), array_map('strtolower', $terms))) {
-			$points += 5;
-			//echo "last name match +5<br />";
-		}
-
+	//if the query returned no results, we're going to try it with wildcards
+	if($q->fetchArray() === false) {
+		$searchSql = "";
 		foreach($terms as $term) {
-			if(stripos($result['last_name'], $term) === 0) {
-				$points += 3;
-				//echo "last name begin +3<br />";
-			} else if(stripos($result['last_name'], $term) !== false) {
-				$points += 1;
-				//echo "last name contain +1<br />";
+			if($searchSql != "") {
+				$searchSql = $searchSql . " OR ";
 			}
-
-			if(stripos($result['first_name'], $term) === 0) {
-				$points += 3;
-				//echo "first name begin +3<br />";
-			} else if(stripos($result['first_name'], $term) !== false) {
-				$points += 1;
-				//echo "first name contain +1<br />";
-			}
+			$searchSql = $searchSql . "`first_name` LIKE '" . $term . "%' OR ";
+			$searchSql = $searchSql . "`last_name` LIKE '" . $term . "%' ";
 		}
-		//echo $points . "<br /><br />";
-		$pointArray[$result['id']] = $points;
+		$q = @$db->query('SELECT * FROM `users` WHERE ' . $searchSql);
+	} else {
+		$q->reset();
 	}
+	//ordering results by prominence
+	$searchResults = array();
+	$pointArray = array();
+	$hasResults = true;
+	if($q->fetchArray() === false) {
+		return false;
+	} else {
+		$q->reset();
+		while($result = $q->fetchArray()) {
+			$points = 0;
 
-	arsort($pointArray); //sorts array from high to low
+			$searchResults[$result['id']] = $result;
 
-	$orderedResults = array();
-	foreach($pointArray as $key=>$points) {
-		$orderedResults[] = $searchResults[$key];
+			if(in_array(strtolower($result['first_name']), array_map('strtolower', $terms))) {
+				$points += 5;
+				//echo "first name match +5<br />";
+			}
+
+			if(in_array(strtolower($result['last_name']), array_map('strtolower', $terms))) {
+				$points += 5;
+				//echo "last name match +5<br />";
+			}
+
+			foreach($terms as $term) {
+				if(stripos($result['last_name'], $term) === 0) {
+					$points += 3;
+					//echo "last name begin +3<br />";
+				} else if(stripos($result['last_name'], $term) !== false) {
+					$points += 1;
+					//echo "last name contain +1<br />";
+				}
+
+				if(stripos($result['first_name'], $term) === 0) {
+					$points += 3;
+					//echo "first name begin +3<br />";
+				} else if(stripos($result['first_name'], $term) !== false) {
+					$points += 1;
+					//echo "first name contain +1<br />";
+				}
+			}
+			//echo $points . "<br /><br />";
+			$pointArray[$result['id']] = $points;
+		}
+
+		arsort($pointArray); //sorts array from high to low
+
+		$orderedResults = array();
+		foreach($pointArray as $key=>$points) {
+			$orderedResults[] = $searchResults[$key];
+		}
+		return $orderedResults;
 	}
+}
+
+if(($results = search($input))) {
+	$hasResults = true;
+} else {
+	$hasResults = false;
 }
 
 ?>
@@ -168,7 +177,7 @@ if($q->fetchArray() === false) {
 		echo "<h1>Are you..</h1>";
 		echo "<h2><a href=\"\">Go Back</a></h2>";
 		echo "<table><tbody>";
-		foreach($orderedResults as $result) {
+		foreach($results as $result) {
 			?>
 				<tr class="search_profile">
 					<td class="info">

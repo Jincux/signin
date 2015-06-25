@@ -41,6 +41,10 @@ if(isset($_POST['email']) && isset($_POST['email_display'])) {
 	$infoText = $infoText . $_POST['email'] . "\n";
 } 
 
+if(isset($_POST['event'])) {
+	$infoText = $_POST['event'] . "\n" . $infoText;
+}
+
 
 
 include 'phpqrcode/phpqrcode.php';

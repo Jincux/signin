@@ -14,11 +14,21 @@ if(isset($_POST['from_options'])) {
 } else {
 	$visit = @$db->query('SELECT * FROM `visits` WHERE `uid`=' . $id . ' ORDER BY `time` DESC LIMIT 1;');
 	if(($lastVisit = $visit->fetchArray()) === false) {
-		header('Location: options.php?id=' . $id);
+		if(isset($_POST['event'])) {
+			header('Location: options.php?id=' . $id . "&event=" . htmlspecialchars($_POST['event']));
+		} else {
+			header('Location: options.php?id=' . $id);
+		}
 		return;
 	} else {
 		$infoText = $lastVisit['info'];
 	}
+
+	if(isset($_POST['event'])) {
+		echo $_POST['event'];
+		$infoText = $_POST['event'] . "\n" . $infoText;
+	}
+
 	$font = 'resources/Verdana.ttf';
 
 	$logo = imagecreatefrompng('resources/logo.png');

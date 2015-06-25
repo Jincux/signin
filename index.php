@@ -102,7 +102,7 @@
 		<hr />
 		<h1>Events Today</h1>
 		<div style="display:inline-block;float:left;width:50%">
-			<div id="events">
+			<div id="events" style="padding: 15px">
 				<table>
 					<tbody>
 						<?php
@@ -132,9 +132,34 @@
 		</div>
 		<div style="display:inline-block;float:right;width:50%">
 			<div id="events" style="padding: 15px;">
-				<div style="margin: 5px; padding: 20px; background-color: #6699FF; box-shadow:0px 0px 10px #000;padding:25px;border-radius:5px;"><b>Devon Endicott</b><br />RVI Investor Meeting
-					<div style="float: right"><button>Quick Print</button></div>
-				</div>
+				<?php
+				$events->reset();
+				while($event = $events->fetchArray()) {
+					$rsvpRes = @$db->query("SELECT * FROM `rsvp` WHERE eid=" . $event['eid']);
+					$attendees = array();
+					while($rsvp = $rsvpRes->fetchArray()) {
+						$personRes = @$db->query("SELECT * FROM `users` WHERE id=" . $rsvp['uid']);
+						$attendees[] = $personRes->fetchArray();
+					}
+
+					foreach($attendees as $attendee) {
+					?>
+					<div style="margin: 5px; padding: 20px; background-color: #6699FF; box-shadow:0px 0px 10px #000;padding:25px;border-radius:5px;">
+						<b><?php echo $attendee['first_name'] . ' ' . $attendee['last_name']; ?></b><br />
+						<?php echo $event['name'];?>
+						<?php echo $attendee['id']; ?>
+						<div style="float: right">
+							<form action="print.php" method="post">
+								<input type="hidden" name="id" value="<?php echo $attendee['id']; ?>" />
+								<input type="hidden" name="event" value="<?php echo htmlspecialchars($event['name']); ?>" />
+								<input type="submit" value="Quick Print" />
+							</form>
+						</div>
+					</div>
+					<?php
+					}
+				}
+				?>
 			</div>
 		</div>
 	</body>

@@ -79,6 +79,7 @@ $user = $q->fetchArray();
 		<form action="print.php" method="post">
 			<input type="hidden" value="1" name="from_options">
 			<input type="hidden" value="<?php echo $id; ?>" name="id">
+			<?php if(isset($_REQUEST['event'])) { echo "<input type=\"hidden\" name=\"event\" value=\"" . $_REQUEST['event'] . "\">";} ?>
 			<table>
 				<tr>
 					<td>Title</td>

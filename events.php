@@ -18,7 +18,7 @@ $obj = json_decode($mainPage);
 
 if ($db = new SQLite3('local_db.sql')) {
 	$q = @$db->query('CREATE TABLE IF NOT EXISTS events (eid INTEGER, start_time TEXT, end_time TEXT, name TEXT, description TEXT, PRIMARY KEY(eid))');
-	$q = @$db->query('CREATE TABLE IF NOT EXISTS rsvps (eid INTEGER, uid INTEGER)');
+	$q = @$db->query('CREATE TABLE IF NOT EXISTS rsvp (eid INTEGER, uid INTEGER)');
 }
 
 
@@ -28,7 +28,7 @@ foreach($obj->results as $eventObj) {
 	$endTime = strtotime($eventObj->end_time);
 	echo "Date: " . date("l, F jS", $startTime);
 	echo "<br />Time:" . date("g:i a", $startTime) . " - " . date("g:i a", $endTime) . "<br />";
-	@$db->query($sql = "INSERT OR IGNORE INTO `events` (eid, start_time, end_time, name, description) VALUES " . 
+	@$db->query("INSERT OR IGNORE INTO `events` (eid, start_time, end_time, name, description) VALUES " . 
 		"('" . $eventObj->id . "'," .
 		"'" . $eventObj->start_time . "'," . 
 		"'" . $eventObj->end_time . "'," .
@@ -36,8 +36,12 @@ foreach($obj->results as $eventObj) {
 		"'" . $eventObj->intro . "');");
 }
 
-$eventRes = @$db->query("SELECT * FROM events");
+$eventRes = @$db->query("SELECT * FROM `events`");
 
 while($event = $eventRes->fetchArray()) {
-	$json = pullUrl("https://techspring.nationbuilder.com/api/v1/sites/v2/pages/events/" . $eventObj['eid'] . "/rsvps?limit=10&__proto__=&access_token=" . $token);
+	$json = pullUrl("https://techspring.nationbuilder.com/api/v1/sites/v2/pages/events/" . $event['eid'] . "/rsvps?limit=10&__proto__=&access_token=" . $token);
+	$rsvpData = json_decode($json);
+	foreach($rsvpData->results as $rsvp) {
+		@$db->query("INSERT OR IGNORE INTO `rsvp` (eid, uid) VALUES ('" . $event['eid'] . "','" . $rsvp->person_id . "')");
+	}
 }
