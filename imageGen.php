@@ -2,7 +2,7 @@
 
 
 function printWithOptions($id) {
-	global $_POST, $db;
+	global $_POST, $db, $infoText;
 	if(!isset($db)) {
 		$db = new SQLite3('local_db.sql');
 	}
@@ -51,7 +51,9 @@ function printWithOptions($id) {
 	} 
 
 	if(isset($_POST['event'])) {
-		$infoText = $_POST['event'] . "\n" . $infoText;
+		$printText = $_POST['event'] . "\n" . $infoText;
+	} else {
+		$printText = $infoText;
 	}
 
 
@@ -100,7 +102,7 @@ function printWithOptions($id) {
 
 	//$user = array('first_name'=>'Devon', 'last_name'=>'Endicott');
 	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
-	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $infoText);
+	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $printText);
 
 	imagerotate($im, 180, $background_color);
 
@@ -116,7 +118,7 @@ function printWithOptions($id) {
 }
 
 function printFromOptions($id) {
-	global $db;
+	global $db, $infoText, $_POST;
 
 	if(!isset($db)) {
 		$db = new SQLite3('local_db.sql');
@@ -147,7 +149,9 @@ function printFromOptions($id) {
 
 	if(isset($_POST['event'])) {
 		echo $_POST['event'];
-		$infoText = $_POST['event'] . "\n" . $infoText;
+		$printText = $_POST['event'] . "\n" . $infoText;
+	} else {
+		$printText = $infoText;
 	}
 
 	$font = 'resources/Verdana.ttf';
@@ -177,7 +181,7 @@ function printFromOptions($id) {
 	imagecopyresized($im, $qrImage, 0, 0, 0, 0, 70, 70, 87, 87);
 
 	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
-	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $infoText);
+	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $printText);
 
 	imagerotate($im, 180, $background_color);
 
