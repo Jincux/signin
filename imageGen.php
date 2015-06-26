@@ -104,7 +104,7 @@ function printWithOptions($id) {
 	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
 	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $printText);
 
-	imagerotate($im, 180, $background_color);
+	imageflip($im, IMG_FLIP_BOTH);
 
 	imagesavealpha($im, false);
 	if(isset($_GET['debug'])) {
@@ -183,7 +183,7 @@ function printFromOptions($id) {
 	imagettftext($im, 40, 0, 35, 110, $text_color, $font, $user['first_name'] . " " . $user['last_name']);
 	imagettftext($im, 25, 0, 35, 170, $text_color2, $font, $printText);
 
-	imagerotate($im, 180, $background_color);
+	imageflip($im, IMG_FLIP_BOTH);
 
 	imagesavealpha($im, false);
 	imagepng($im, 'temp.png');
