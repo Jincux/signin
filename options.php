@@ -75,7 +75,8 @@ $user = $q->fetchArray();
 	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-	<div>
+	<div style="padding-top: 20px;text-align: center;">
+		<h3><a href="/">Go Back</a></h3>
 		<form action="print.php" method="post">
 			<input type="hidden" value="1" name="from_options">
 			<input type="hidden" value="<?php echo $id; ?>" name="id">
