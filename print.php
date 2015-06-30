@@ -9,9 +9,10 @@ include 'imageGen.php';
 if(isset($_POST['from_options'])) {
 	printWithOptions($_POST['id']);
 } else {
-	printFromOptions($_POST['id']);
+	if(!printFromOptions($_POST['id'])) {
+		return;
+	}
 }
-
 
 $printerName = trim(file_get_contents('config/printer.txt'));
 $options = "-o InputSlot=Left"; //prints off the left spool
@@ -22,6 +23,10 @@ $id = $db->escapeString($_POST['id']);
 
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 $user = $q->fetchArray();
+
+
+require 'twilio.php';
+doTwilio($user['phone']);
 
 //log in the database the the vistor was here
 @$db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString($infoText) . "')");

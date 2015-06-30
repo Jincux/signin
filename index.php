@@ -107,13 +107,15 @@
 					<tbody>
 						<?php
 						$db = new SQLite3('local_db.sql');
-						$events = @$db->query("SELECT * FROM `events` ORDER BY start_time ASC");
+						$events = @$db->query("SELECT * FROM `events`  WHERE DATE(start_time) = DATE() ORDER BY start_time ASC");
+						$any = false;
 						while($event = $events->fetchArray()) {
+							$any = true;
 							$startTime = strtotime($event['start_time']);
 							$endTime = strtotime($event['end_time']);
 						?>
 						<tr>
-							<td><b><?php echo date("g:i a", $startTime) . " - " . date("g:i a", $endTime);?></b></td>
+							<td style="text-align: center;"><b><?php echo date("g:i a", $startTime) . "<br />-<br />" . date("g:i a", $endTime);?></b></td>
 							<td>
 								<p>
 									<b><?php echo $event['name']; ?></b><br />
@@ -123,6 +125,14 @@
 							</td>
 						</tr>
 						<?php
+						}
+
+						if($any === false) {
+							?>
+						<tr>
+							<td colspan="2" style="text-align: center; font-size: 30px">No Events Today!</td>
+						</tr>
+							<?php
 						}
 						?>
 

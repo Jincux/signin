@@ -133,8 +133,10 @@ function printFromOptions($id) {
 	if(($lastVisit = $visit->fetchArray()) === false) {
 		if(isset($_POST['event'])) {
 			header('Location: options.php?id=' . $id . "&event=" . htmlspecialchars($_POST['event']));
+			return false;
 		} else {
 			header('Location: options.php?id=' . $id);
+			return false;
 		}
 		return;
 	} else {
