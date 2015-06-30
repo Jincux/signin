@@ -15,6 +15,8 @@ function pullUrl($url) {
 	return $ret;
 }
 
+global $inhibitLoad;
+
 //checking local database to see if it exists
 if ($db = new SQLite3('local_db.sql')) {
     $q = @$db->query('CREATE TABLE IF NOT EXISTS users (id INTEGER, first_name TEXT, last_name TEXT, email TEXT, phone TEXT, PRIMARY KEY (id))');
@@ -22,7 +24,8 @@ if ($db = new SQLite3('local_db.sql')) {
     $q = @$db->query('CREATE TABLE IF NOT EXISTS events (eid INTEGER, start_time TEXT, end_time TEXT, name TEXT, description TEXT)');
 }
 
-function getPeople() {
+function getPeople($pageCap = 0) {
+
 	global $db;
 	//API Token obtained on NationBuilder
 	$token = trim(file_get_contents('config/token.txt'));
@@ -36,6 +39,11 @@ function getPeople() {
 	// FOR TESTING ONLY - only pulling one page to save on compute/testing time
 	//$pages_total = 4;
 	//fetch each page of results (limit of 10 people per page)
+	echo $pageCap;
+	return;
+	if(isset($pageCap)) {
+		$pages_total = $pageCap;
+	}
 	for($i = 1; $i <= $pages_total; $i++) {
 		echo substr(($i/$pages_total)*100, 0, 5) . "%\r";
 		$page = pullUrl("https://techspring.nationbuilder.com/api/v1/people?page=" . $i . "&access_token=" . $token);
@@ -120,8 +128,9 @@ function getEvents() {
 	}
 }
 
-getPeople();
-getEvents();
-
-$db->close();
+if(!isset($inhibitLoad)) {
+	getPeople();
+	getEvents();
+	$db->close();
+}
 ?>

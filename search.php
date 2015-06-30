@@ -175,7 +175,7 @@ if(($results = search($input))) {
 	<?php
 	if($hasResults) {
 		echo "<h1>Are you..</h1>";
-		echo "<h2><a href=\"\">Go Back</a></h2>";
+		echo "<h2>Don't see your name here? <a href=\"/register.php\">Register</a> or <a href=\"/\">Go Back</a></h2>";
 		echo "<table><tbody>";
 		foreach($results as $result) {
 			?>
@@ -207,7 +207,7 @@ if(($results = search($input))) {
 	} else {
 		echo "<h1>Uh oh!</h1>";
 		echo "We didn't find an account that matched that name!<br />";
-		echo "Would you like to <a href=\"register.php\">make an account</a> or <a href=\"index.php\">try again?</a>";
+		echo "Would you like to <a href=\"/register.php\">make an account</a> or <a href=\"index.php\">try again?</a>";
 	}
 	?>
 </body>
