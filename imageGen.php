@@ -2,7 +2,7 @@
 
 
 function printWithOptions($id) {
-	global $_POST, $db, $infoText;
+	global $_POST, $db, $optionsObject;
 	if(!isset($db)) {
 		$db = new SQLite3('local_db.sql');
 	}
@@ -25,37 +25,22 @@ function printWithOptions($id) {
 	//log in the database the the vistor was here
 	//@$db->query("INSERT INTO `visits` (uid, time) VALUES ('" . $id . "', '" . time() . "')");
 
+	$optionsObject = new stdClass();
+	$optionsObject->title = $_POST['title'];
+	$optionsObject->employer = $_POST['employer'];
+	$optionsObject->phone = $_POST['phone'];
+	$optionsObject->phone_display = @$_POST['phone_display'];
+	$optionsObject->email = $_POST['email'];
+	$optionsObject->email_display = @$_POST['email_display'];
 
-
-
-
-
-	$infoText = "";
-
-	if(isset($_POST['title'])) {
-		$infoText = $infoText . $_POST['title'] . "\n";
-	}
-
-	if(isset($_POST['employer'])) {
-		$infoText = $infoText . $_POST['employer'] . "\n";
-	} 
-
-	$infoText = $infoText . "\n";
-
-	if(isset($_POST['phone']) && isset($_POST['phone_display'])) {
-		$infoText = $infoText . preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $user['phone']) . "\n";
-	} 
-
-	if(isset($_POST['email']) && isset($_POST['email_display'])) {
-		$infoText = $infoText . $_POST['email'] . "\n";
-	} 
+	$infoText = constructInfoText($optionsObject);
 
 	if(isset($_POST['event'])) {
+		echo $_POST['event'];
 		$printText = $_POST['event'] . "\n" . $infoText;
 	} else {
 		$printText = $infoText;
 	}
-
 
 
 	include 'phpqrcode/phpqrcode.php';
@@ -118,7 +103,7 @@ function printWithOptions($id) {
 }
 
 function printFromOptions($id) {
-	global $db, $infoText, $_POST;
+	global $db, $infoText, $optionsObject;
 
 	if(!isset($db)) {
 		$db = new SQLite3('local_db.sql');
@@ -140,8 +125,10 @@ function printFromOptions($id) {
 		}
 		return;
 	} else {
-		$infoText = $lastVisit['info'];
+		$optionsObject = json_decode($lastVisit['info']);
 	}
+
+	$infoText = constructInfoText($optionsObject);
 
 	include 'phpqrcode/phpqrcode.php';
 	unlink('resources/qr.png');
@@ -192,4 +179,28 @@ function printFromOptions($id) {
 
 	imagedestroy($im);
 	imagedestroy($logo);
+	return true;
+}
+
+function constructInfoText($optionsObject) {
+	$infoText = "";
+	if(isset($optionsObject->title)) {
+		$infoText = $infoText . $optionsObject->title . "\n";
+	}
+
+	if(isset($optionsObject->employer)) {
+		$infoText = $infoText . $optionsObject->employer . "\n";
+	} 
+
+	$infoText = $infoText . "\n";
+
+	if(isset($optionsObject->phone) && @$optionsObject->phone_display != false) {
+		$infoText = $infoText . preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $optionsObject->phone) . "\n";
+	} 
+
+	if(isset($optionsObject->email) && @$optionsObject->email_display != false) {
+		$infoText = $infoText . $optionsObject->email . "\n";
+	} 
+
+	return $infoText;
 }

@@ -29,7 +29,7 @@ require 'twilio.php';
 doTwilio($user['phone']);
 
 //log in the database the the vistor was here
-@$db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString($infoText) . "')");
+@$db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString(json_encode($optionsObject)) . "')");
 //let's give out guest a nice, warm welcome
 $db->close();
 ?>
