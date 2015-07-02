@@ -39,9 +39,8 @@ function getPeople($pageCap = 0) {
 	// FOR TESTING ONLY - only pulling one page to save on compute/testing time
 	//$pages_total = 4;
 	//fetch each page of results (limit of 10 people per page)
-	echo $pageCap;
-	return;
-	if(isset($pageCap)) {
+
+	if($pageCap > 0) {
 		$pages_total = $pageCap;
 	}
 	for($i = 1; $i <= $pages_total; $i++) {

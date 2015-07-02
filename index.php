@@ -119,7 +119,7 @@
 							<td>
 								<p>
 									<b><?php echo $event['name']; ?></b><br />
-									<i>Flex Space</i><br /><br />
+									<br />
 									<?php echo $event['description']; ?>
 								</p>
 							</td>
