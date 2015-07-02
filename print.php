@@ -24,14 +24,18 @@ $id = $db->escapeString($_POST['id']);
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 $user = $q->fetchArray();
 
+if(isset($user['phone'])) {
+	require 'twilio.php';
+	doTwilio($user['phone']);
+}
 
-require 'twilio.php';
-doTwilio($user['phone']);
-
+echo "inserting..";
 //log in the database the the vistor was here
 $db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString(json_encode($optionsObject)) . "')");
 //let's give out guest a nice, warm welcome
+echo $db->lastErrorMsg();
 $db->close();
+echo "inserted";
 ?>
 
 <html>
