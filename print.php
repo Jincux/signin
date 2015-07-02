@@ -10,6 +10,7 @@ if(isset($_POST['from_options'])) {
 	printWithOptions($_POST['id']);
 } else {
 	if(!printFromOptions($_POST['id'])) {
+		echo "returning";
 		return;
 	}
 }
