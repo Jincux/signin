@@ -4,15 +4,15 @@ $db = new SQLite3('local_db.sql');
 //header("Content-Type: image/png");
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
-echo "including image gen";
+//echo "including image gen";
 include 'imageGen.php';
 if(isset($_POST['from_options'])) {
-	echo "with options";
+	//echo "with options";
 	printWithOptions($_POST['id']);
 } else {
-	echo "from options";
+	//echo "from options";
 	if(!printFromOptions($_POST['id'])) {
-		echo "returning";
+		//echo "returning";
 		return;
 	}
 }
@@ -24,9 +24,9 @@ $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpat
 
 $id = $db->escapeString($_POST['id']);
 
-echo "getting user";
+//echo "getting user";
 $q = $db->query('SELECT * FROM `users` WHERE `id`=' . $id);
-echo $db->lastErrorMsg();
+//echo $db->lastErrorMsg();
 $user = $q->fetchArray();
 
 
@@ -35,19 +35,19 @@ if(isset($user['phone'])) {
 	doTwilio($user['phone']);
 }
 
-echo "inserting..";
+//echo "inserting..";
 //log in the database the the vistor was here
 $db->query("INSERT INTO `visits` (uid, time, info) VALUES ('" . $id . "', '" . time() . "', '" . $db->escapeString(json_encode($optionsObject)) . "')");
 //let's give out guest a nice, warm welcome
-echo $db->lastErrorMsg();
+//echo $db->lastErrorMsg();
 $db->close();
-echo "inserted";
+//echo "inserted";
 ?>
 
 <html>
 	<head>
 		<title>Welcome!</title>
-		<meta http-equiv="refdresh" content="5;URL='/'" />
+		<meta http-equiv="refdresh" content="5;URL='/index.php'" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<style type="text/css">
 		body {
