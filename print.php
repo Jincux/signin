@@ -25,8 +25,10 @@ $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpat
 $id = $db->escapeString($_POST['id']);
 
 echo "getting user";
-$q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
+$q = $db->query('SELECT * FROM `users` WHERE `id`=' . $id);
+echo $db->lastErrorMsg();
 $user = $q->fetchArray();
+
 
 if(isset($user['phone'])) {
 	require 'twilio.php';
