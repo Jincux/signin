@@ -4,11 +4,13 @@ $db = new SQLite3('local_db.sql');
 //header("Content-Type: image/png");
 //echo realpath('.');
 //putenv('GDFONTPATH=' . realpath('.'));
-
+echo "including image gen";
 include 'imageGen.php';
 if(isset($_POST['from_options'])) {
+	echo "with options";
 	printWithOptions($_POST['id']);
 } else {
+	echo "from options";
 	if(!printFromOptions($_POST['id'])) {
 		echo "returning";
 		return;
@@ -22,6 +24,7 @@ $ret = shell_exec("lpr " . $options . " -P \"" . $printerName . "\" " .  realpat
 
 $id = $db->escapeString($_POST['id']);
 
+echo "getting user";
 $q = @$db->query('SELECT * FROM `users` WHERE `id`=' . $id);
 $user = $q->fetchArray();
 
