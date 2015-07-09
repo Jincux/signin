@@ -157,7 +157,6 @@
 					<div style="margin: 5px; padding: 20px; background-color: #6699FF; box-shadow:0px 0px 10px #000;padding:25px;border-radius:5px;">
 						<b><?php echo $attendee['first_name'] . ' ' . $attendee['last_name']; ?></b><br />
 						<?php echo $event['name'];?>
-						<?php echo $attendee['id']; ?>
 						<div style="float: right">
 							<form action="print.php" method="post">
 								<input type="hidden" name="id" value="<?php echo $attendee['id']; ?>" />

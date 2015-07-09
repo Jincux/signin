@@ -1,5 +1,31 @@
-
+<!DOCTYPE html>
 <html>
+	<head>
+		<title>Register</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<style>
+		body {
+			font-size: 30pt;
+		}
+		input {
+			height: 50px;
+			width: 800px;
+			margin: 10px;
+			font-size: 30pt;
+		}
+		</style>
+	</head>
+	<body>
+		<form action="register_temp.php" method="post">
+			First Name: <input type="text" name="first_name"><br />
+			Last Name: <input type="text" name="last_name"><br />
+			<input type="submit" value="Register"/>
+		</form>
+	</body>
+</html>
+<?php
+//Disabled for Tap in to TechSpring
+/*<html>
 	<head>
 	</head>
 	<body>
@@ -15,4 +41,5 @@
 		<?php } ?>
 		<h1 style="font-family: Verdana; margin: 0 auto; text-align:center;"><a style="text-decoration: none;" href="register_complete.php">When you're done, click here!</a></h1>
 	</body>
-</html>
+</html>*/
+?>
