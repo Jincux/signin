@@ -2,7 +2,7 @@
 $id = 1000000 + rand(0, 1000);
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
-$email = "";
+$email = $_POST['email'];
 $phone = "";
 
 $db = new SQLite3('local_db.sql');
